@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Work+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --font-cormorant: "Cormorant Garamond", serif;
+  --font-worksans: "Work Sans", sans-serif;
+  --font-plexmono: "IBM Plex Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #FCFAF6;
+  color: #28241E;
+}
+
+.hatch {
+  background-color: #EFEAE0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #E2DACA 0px,
+    #E2DACA 1.5px,
+    transparent 1.5px,
+    transparent 10px
+  );
+}
