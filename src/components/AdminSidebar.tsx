@@ -7,11 +7,15 @@ import { Box, List, ListItemButton, ListItemText, Typography } from "@mui/materi
 const items = [
   { label: "Dashboard", href: "/admin" },
   { label: "Đặt phòng", href: "/admin/bookings" },
+  { label: "Lịch phòng", href: "/admin/calendar" },
   { label: "Phòng", href: "/admin/rooms" },
   { label: "Thực đơn", href: "/admin/menu" },
-  { label: "Khách hàng", href: "/admin/customers" },
   { label: "Sự kiện", href: "/admin/events" },
   { label: "Bài viết", href: "/admin/blog" },
+  { label: "Mã giảm giá", href: "/admin/coupons" },
+  { label: "Khách hàng", href: "/admin/customers" },
+  { label: "Người dùng", href: "/admin/users" },
+  { label: "Nhật ký", href: "/admin/logs" },
   { label: "Cài đặt", href: "/admin/settings" },
 ];
 

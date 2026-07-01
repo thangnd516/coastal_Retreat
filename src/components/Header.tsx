@@ -1,4 +1,4 @@
-import NextLink from "next/link";
+import Link from "next/link";
 import { AppBar, Toolbar, Box, Button, Typography, Stack } from "@mui/material";
 import { createClient } from "@/lib/supabase/server";
 
@@ -27,10 +27,10 @@ export default async function Header() {
   }
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ bgcolor: "transparent", boxShadow: "none" }}>
       <Toolbar sx={{ justifyContent: "space-between", px: { xs: 2, md: 4.5 }, py: 1.5 }}>
-        {/* Sửa cách dùng: dùng NextLink bao quanh Typography thay vì component={Link} */}
-        <NextLink href="/" style={{ textDecoration: "none" }}>
+        {/* Sửa Typography thành thẻ bọc Link */}
+        <Link href="/" style={{ textDecoration: "none" }}>
           <Typography
             variant="h6"
             sx={{
@@ -41,32 +41,53 @@ export default async function Header() {
           >
             Coastal Retreat
           </Typography>
-        </NextLink>
+        </Link>
 
-        {/* Làm tương tự cho danh sách navLinks */}
-        <Stack direction="row" spacing={3.5} sx={{ display: { xs: "none", md: "flex" } }}>
+        <Stack
+          direction="row"
+          spacing={3.5}
+          sx={{ display: { xs: "none", md: "flex" } }}
+        >
           {navLinks.map((l) => (
-            <NextLink key={l.href} href={l.href} style={{ textDecoration: "none" }}>
-              <Typography sx={{ fontSize: 13, color: "text.secondary", "&:hover": { color: "primary.dark" } }}>
+            <Link key={l.href} href={l.href} style={{ textDecoration: "none" }}>
+              <Typography
+                sx={{
+                  fontSize: 13,
+                  color: "text.secondary",
+                  "&:hover": { color: "primary.dark" },
+                }}
+              >
                 {l.label}
               </Typography>
-            </NextLink>
+            </Link>
           ))}
         </Stack>
 
-        {/* Đối với Button, MUI hỗ trợ thuộc tính 'component="a"' và 'href' trực tiếp */}
         <Box sx={{ display: "flex", gap: 1.5, alignItems: "center" }}>
           {user ? (
             <>
               {role === "admin" && (
-                <Button href="/admin" size="small" variant="outlined">Admin</Button>
+                <Link href="/admin" style={{ textDecoration: "none" }}>
+                  <Button size="small" variant="outlined">Admin</Button>
+                </Link>
               )}
-              <Button href="/account" size="small" variant="outlined">Tài khoản</Button>
+              {role === "staff" && (
+                <Link href="/staff" style={{ textDecoration: "none" }}>
+                  <Button size="small" variant="outlined">Staff Panel</Button>
+                </Link>
+              )}
+              <Link href="/account" style={{ textDecoration: "none" }}>
+                <Button size="small" variant="outlined">Tài khoản</Button>
+              </Link>
             </>
           ) : (
-            <Button href="/login" size="small" variant="outlined">Đăng nhập</Button>
+            <Link href="/login" style={{ textDecoration: "none" }}>
+              <Button size="small" variant="outlined">Đăng nhập</Button>
+            </Link>
           )}
-          <Button href="/homestay" variant="contained" size="small">Book Now</Button>
+          <Link href="/homestay" style={{ textDecoration: "none" }}>
+            <Button variant="contained" size="small">Book Now</Button>
+          </Link>
         </Box>
       </Toolbar>
     </AppBar>
