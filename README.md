@@ -10,6 +10,9 @@ Material UI + Supabase (Auth, Database, RLS).
    - `supabase/schema.sql` — tạo bảng, trigger tự tạo profile khi đăng ký,
      và Row Level Security cho toàn bộ bảng.
    - `supabase/seed.sql` — dữ liệu mẫu cho rooms, products, events, blogs.
+   - `supabase/migration_v2.sql` — thêm cột ảnh cho rooms, bảng `reviews`,
+     index hỗ trợ tìm kiếm, và Storage bucket `coastal-retreat` (public,
+     chỉ admin được upload/xóa).
 3. Vào **Project Settings → API**, lấy `Project URL` và `anon public key`.
 
 ## 2. Cấu hình môi trường
@@ -66,3 +69,20 @@ Phương thức thanh toán (VNPay/MoMo/thẻ/tiền mặt) hiện được lưu
 nhãn trong bảng `payments` với trạng thái `pending`. Đây là phần khung —
 để thanh toán thật cần tích hợp SDK/webhook của VNPay hoặc MoMo và cập
 nhật `payments.status` khi nhận callback.
+
+## Tính năng đã bổ sung thêm
+
+- **Upload ảnh thật** qua Supabase Storage (bucket `coastal-retreat`):
+  admin có thể tải ảnh khi tạo/sửa phòng, món ăn, sự kiện, bài blog.
+  Trang khách tự động hiện ảnh thật thay cho placeholder khi có ảnh.
+- **Chặn trùng lịch đặt phòng**: khi tạo booking, hệ thống kiểm tra các
+  booking `pending`/`confirmed` khác của cùng phòng có giao ngày hay
+  không, từ chối nếu trùng.
+- **Đánh giá & xếp hạng phòng** (bảng `reviews` mới): khách đã đăng nhập
+  có thể để lại sao + bình luận trên trang chi tiết phòng; điểm trung
+  bình hiển thị ngay cạnh tên phòng.
+- **Tìm kiếm & lọc**:
+  - `/homestay`: lọc theo ngày nhận/trả phòng (loại phòng đã có người
+    đặt trùng ngày) và số khách tối thiểu.
+  - `/cafe`, `/bakery`: ô tìm kiếm theo tên/mô tả món, lọc tức thời phía
+    client.

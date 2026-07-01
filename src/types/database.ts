@@ -1,9 +1,11 @@
+export type UserRole = "customer" | "staff" | "admin";
+
 export type Profile = {
   id: string;
   full_name: string | null;
   phone: string | null;
   avatar_url: string | null;
-  role: "admin" | "customer";
+  role: UserRole;
   created_at: string;
 };
 
@@ -117,6 +119,18 @@ export type Review = {
   profiles?: Profile;
 };
 
+export type AdminLog = {
+  id: string;
+  actor_id: string | null;
+  action: string;
+  target_table: string;
+  target_id: string | null;
+  old_value: Record<string, unknown> | null;
+  new_value: Record<string, unknown> | null;
+  created_at: string;
+  profiles?: Profile;
+};
+
 export type PaymentReferenceType = "room_booking" | "cafe_order" | "event_booking";
 export type PaymentStatus = "pending" | "success" | "failed";
 export type PaymentMethod = "credit_card" | "momo" | "vnpay" | "cash";
@@ -129,5 +143,48 @@ export type Payment = {
   amount: number;
   payment_method: PaymentMethod | null;
   status: PaymentStatus;
+  created_at: string;
+};
+
+export type Coupon = {
+  id: string;
+  code: string;
+  description: string | null;
+  discount_type: "percent" | "fixed";
+  discount_value: number;
+  min_order_amount: number;
+  max_uses: number | null;
+  current_uses: number;
+  valid_from: string;
+  valid_until: string | null;
+  is_active: boolean;
+  created_at: string;
+};
+
+export type WishlistItem = {
+  id: string;
+  user_id: string;
+  room_id: string;
+  created_at: string;
+  rooms?: Room;
+};
+
+export type LoyaltyPoint = {
+  id: string;
+  user_id: string;
+  points: number;
+  reason: string;
+  reference_id: string | null;
+  created_at: string;
+};
+
+export type Notification = {
+  id: string;
+  user_id: string;
+  title: string;
+  body: string | null;
+  type: "booking" | "order" | "promo" | "info";
+  reference_id: string | null;
+  is_read: boolean;
   created_at: string;
 };
