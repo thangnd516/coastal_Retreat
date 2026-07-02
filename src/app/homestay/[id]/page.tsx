@@ -36,6 +36,16 @@ export default async function RoomDetailPage({
     data: { user },
   } = await supabase.auth.getUser();
 
+
+  // Tách chuỗi thành mảng
+  const imageList = room.image_url ? room.image_url.split(',') : [];
+
+  // Gán từng ảnh vào biến để dễ gọi
+  const mainImage = imageList[0];
+  const subImage1 = imageList[1];
+  const subImage2 = imageList[2];
+  const subImage3 = imageList[3];
+
   return (
     <Box sx={{ minHeight: "100vh" }}>
       <Header />
@@ -45,12 +55,20 @@ export default async function RoomDetailPage({
           Homestay / {room.name}
         </Typography>
 
-        <Box sx={{ mt: 2.5, display: "grid", gridTemplateColumns: "3fr 1fr", gap: 1.5, height: { xs: "auto", md: 380 } }}>
-          <ImagePlaceholder label="ảnh chính phòng" height="100%" sx={{ minHeight: 240 }} />
+        <Box sx={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 2 }}>
+          {/* Ảnh chính */}
+          <ImagePlaceholder
+            src={mainImage}
+            label="ảnh chính phòng"
+            height="100%"
+            sx={{ minHeight: 240 }}
+          />
+
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-            <ImagePlaceholder label="ảnh 2" height="100%" sx={{ minHeight: 76 }} />
-            <ImagePlaceholder label="ảnh 3" height="100%" sx={{ minHeight: 76 }} />
-            <ImagePlaceholder label="ảnh 4" height="100%" sx={{ minHeight: 76 }} />
+            {/* Ảnh 2, 3, 4 */}
+            <ImagePlaceholder src={subImage1} label="" height="100%" sx={{ minHeight: 76 }} />
+            <ImagePlaceholder src={subImage2} label="" height="100%" sx={{ minHeight: 76 }} />
+            <ImagePlaceholder src={subImage3} label="" height="100%" sx={{ minHeight: 76 }} />
           </Box>
         </Box>
 
