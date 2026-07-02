@@ -15,6 +15,7 @@ const items = [
   { label: "Mã giảm giá", href: "/admin/coupons" },
   { label: "Khách hàng", href: "/admin/customers" },
   { label: "Người dùng", href: "/admin/users" },
+  { label: "AI Hub", href: "/admin/ai" },
   { label: "Nhật ký", href: "/admin/logs" },
   { label: "Cài đặt", href: "/admin/settings" },
 ];
