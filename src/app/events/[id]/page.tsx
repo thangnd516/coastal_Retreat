@@ -30,7 +30,11 @@ export default async function EventDetailPage({
       <Header />
 
       <Box sx={{ px: { xs: 3, md: 7 }, py: 4 }}>
-        <ImagePlaceholder label="ảnh sự kiện" height={320} />
+        <ImagePlaceholder
+          src={event.thumbnail_url || 'https://via.placeholder.com/400x320?text=Chua+co+anh'}
+          label=""
+          height={320}
+        />
 
         <Grid container spacing={5} sx={{ mt: 1 }}>
           <Grid size={{ xs: 12, md: 8 }}>

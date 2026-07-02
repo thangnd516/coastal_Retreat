@@ -1,12 +1,14 @@
 import { Box, Typography, Grid, Card } from "@mui/material";
 import { createClient } from "@/lib/supabase/server";
 import { formatVND, formatDate } from "@/lib/format";
+import RevenueCharts from "@/components/RevenueCharts";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
 
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
   const [
     { data: roomBookingsThisMonth },
@@ -14,6 +16,9 @@ export default async function AdminDashboard() {
     { data: eventBookingsThisMonth },
     { data: rooms },
     { data: recentBookings },
+    { data: roomBookings30d },
+    { data: orders30d },
+    { data: eventBookings30d },
   ] = await Promise.all([
     supabase.from("room_bookings").select("total_price, status, created_at").gte("created_at", startOfMonth),
     supabase.from("orders").select("total_amount, status, created_at").gte("created_at", startOfMonth),
@@ -24,7 +29,26 @@ export default async function AdminDashboard() {
       .select("*, rooms(name), profiles(full_name)")
       .order("created_at", { ascending: false })
       .limit(6),
+    supabase.from("room_bookings").select("total_price, created_at, status").gte("created_at", thirtyDaysAgo).neq("status", "cancelled"),
+    supabase.from("orders").select("total_amount, created_at, status").gte("created_at", thirtyDaysAgo).neq("status", "cancelled"),
+    supabase.from("event_bookings").select("total_price, created_at, status").gte("created_at", thirtyDaysAgo).neq("status", "cancelled"),
   ]);
+
+  // Tính dữ liệu biểu đồ theo ngày
+  const chartMap: Record<string, { room: number; cafe: number; event: number }> = {};
+  const addToMap = (items: { created_at: string; [k: string]: unknown }[] | null, key: "room" | "cafe" | "event", amountKey: string) => {
+    (items ?? []).forEach((r) => {
+      const day = r.created_at.slice(5, 10); // MM-DD
+      if (!chartMap[day]) chartMap[day] = { room: 0, cafe: 0, event: 0 };
+      chartMap[day][key] += Number(r[amountKey] ?? 0);
+    });
+  };
+  addToMap(roomBookings30d, "room", "total_price");
+  addToMap(orders30d, "cafe", "total_amount");
+  addToMap(eventBookings30d, "event", "total_price");
+  const chartData = Object.entries(chartMap)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, v]) => ({ date, ...v }));
 
   const roomRevenue = (roomBookingsThisMonth ?? [])
     .filter((b) => b.status !== "cancelled")
@@ -113,6 +137,8 @@ export default async function AdminDashboard() {
           </Typography>
         )}
       </Box>
+
+      <RevenueCharts data={chartData} />
     </Box>
   );
 }

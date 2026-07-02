@@ -5,28 +5,18 @@ import { usePathname } from "next/navigation";
 import { Box, List, ListItemButton, ListItemText, Typography } from "@mui/material";
 
 const items = [
-  { label: "Dashboard", href: "/admin" },
-  { label: "Đặt phòng", href: "/admin/bookings" },
-  { label: "Lịch phòng", href: "/admin/calendar" },
-  { label: "Phòng", href: "/admin/rooms" },
-  { label: "Thực đơn", href: "/admin/menu" },
-  { label: "Sự kiện", href: "/admin/events" },
-  { label: "Bài viết", href: "/admin/blog" },
-  { label: "Mã giảm giá", href: "/admin/coupons" },
-  { label: "Khách hàng", href: "/admin/customers" },
-  { label: "Người dùng", href: "/admin/users" },
-  { label: "AI Hub", href: "/admin/ai" },
-  { label: "Nhật ký", href: "/admin/logs" },
-  { label: "Cài đặt", href: "/admin/settings" },
+  { label: "Tổng quan", href: "/staff" },
+  { label: "Đơn hàng", href: "/staff/orders" },
+  { label: "Thực đơn", href: "/staff/menu" },
 ];
 
-export default function AdminSidebar() {
+export default function StaffSidebar() {
   const pathname = usePathname();
 
   return (
     <Box
       sx={{
-        width: 224,
+        width: 200,
         flexShrink: 0,
         borderRight: "1px solid",
         borderColor: "divider",
@@ -39,19 +29,22 @@ export default function AdminSidebar() {
       <Typography
         sx={{
           fontFamily: "var(--font-cormorant), serif",
-          fontSize: 18,
+          fontSize: 17,
           fontWeight: 600,
           px: 1,
-          mb: 3,
+          mb: 0.5,
         }}
       >
         Coastal Retreat
       </Typography>
+      <Typography sx={{ px: 1, mb: 3, fontSize: 11, color: "text.secondary", fontFamily: "var(--font-plexmono), monospace" }}>
+        STAFF PANEL
+      </Typography>
       <List disablePadding sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
         {items.map((item) => {
           const active =
-            item.href === "/admin"
-              ? pathname === "/admin"
+            item.href === "/staff"
+              ? pathname === "/staff"
               : pathname.startsWith(item.href);
           return (
             <ListItemButton
@@ -61,7 +54,6 @@ export default function AdminSidebar() {
               selected={active}
               sx={{
                 borderRadius: 1,
-                fontSize: 14,
                 "&.Mui-selected": {
                   bgcolor: "primary.main",
                   color: "primary.contrastText",

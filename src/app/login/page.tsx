@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import {
   Box,
@@ -18,7 +18,7 @@ export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const formRef = useRef<HTMLFormElement>(null); // 2. Tạo ref cho form
   return (
     <Box sx={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", px: 3 }}>
       <Box sx={{ width: "100%", maxWidth: 380, border: "1px solid", borderColor: "divider", p: 4 }}>
@@ -43,30 +43,24 @@ export default function LoginPage() {
         </Tabs>
 
         <Box
+          ref={formRef} // 3. Gán ref cho form
           component="form"
           sx={{ mt: 3 }}
-          action={async (formData: FormData) => {
+          action={async () => {
             setError(null);
             setSubmitting(true);
-            
+            const formData = new FormData(formRef.current!);
             try {
-              console.log("Đã bấm submit!"); 
-              
-              // Gọi Server Action
-              const result = mode === "login" 
-                ? await login(formData) 
+              console.log("Dữ liệu trong form:", Object.fromEntries(formData.entries()));
+
+              const result = mode === "login"
+                ? await login(formData)
                 : await signup(formData);
 
-              // Xử lý lỗi trả về từ server
-              if (result?.error) {
-                setError(result.error);
-              } else if (mode === "signup") {
-                alert("Đăng ký thành công! Vui lòng kiểm tra email.");
-              }
+              if (result?.error) setError(result.error);
             } catch (err) {
-              setError("Có lỗi hệ thống xảy ra, vui lòng thử lại.");
+              setError("Có lỗi hệ thống.");
             } finally {
-              // Đảm bảo nút luôn được mở khóa dù kết quả thế nào
               setSubmitting(false);
             }
           }}
