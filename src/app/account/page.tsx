@@ -54,6 +54,19 @@ export default async function AccountPage() {
             <Typography sx={{ mt: 0.5, fontSize: 13, color: "text.secondary" }}>
               {user.email}
             </Typography>
+            <Box sx={{ display: "flex", gap: 1.5, mt: 1.5 }}>
+              <Link href="/account/profile">
+                <Button size="small" variant="outlined">
+                  Sửa hồ sơ
+                </Button>
+              </Link>
+
+              <Link href="/account/wishlist">
+                <Button size="small" variant="outlined">
+                  Phòng yêu thích
+                </Button>
+              </Link>
+            </Box>
           </Box>
           <Box component="form" action={signout}>
             <Button type="submit" variant="outlined" size="small">
